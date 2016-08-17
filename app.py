@@ -77,7 +77,6 @@ def get_ics():
 
 @app.route("/static/<path:path>")
 def statics(path=None):
-    print("STATIC", path)
     return ""
     # return send_from_directory("static", path)
 
