@@ -6,17 +6,15 @@ from flask import Flask, request, render_template, send_from_directory, Response
 import requests
 from ics import Calendar
 from fnmatch import fnmatch
-import dotenv
+from dotenv import load_dotenv, find_dotenv
 import os
 
 
-dotenv.load(os.path.join(os.getcwd(), ".env"))
+load_dotenv(find_dotenv())
 __SECRET__ = os.environ["EVENTSPEC_SECRET"]
 __USER__ = os.environ["AUTHUSER"]
 __PASS__ = os.environ["AUTHPASS"]
 
-print(__USER__)
-print(__PASS__)
 
 app = Flask(__name__)
 
