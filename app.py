@@ -5,9 +5,11 @@ from functools import wraps
 from flask import Flask, request, render_template, send_from_directory, Response
 import requests
 from ics import Calendar
+import ics.alarm
 from fnmatch import fnmatch
 from dotenv import load_dotenv, find_dotenv
 import os
+import datetime
 
 
 load_dotenv(find_dotenv())
@@ -71,7 +73,10 @@ def get_ics():
             continue
         if len(black) > 0 and any(fnmatch(e.name, p) for p in black):
             continue
-        outc.events.append(e)
+        
+        a = ics.alarm.DisplayAlarm(description=e.name, trigger=datetime.timedelta(minutes=15))
+        e.alarms.append(a)
+        outc.events.add(e)
 
     return str(outc)
 
