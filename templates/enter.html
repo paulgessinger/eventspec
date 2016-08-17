@@ -1,0 +1,20 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <link rel=stylesheet type=text/css href="{{ url_for('static', filename='style.css') }}">
+  <title>eventspec</title>
+</head>
+<body>
+  <h1>Welcome to eventspec</h1>
+  <form action="/ics" method="get">
+    URL:<br/>
+    <input type="text" name="url"/><br/>
+    Whitelist patterns, separated by semicolons <br/>
+    <input type="text" value="" name="white"/><br/>
+    Blacklist patterns, separated by semicolons <br/>
+    <input type="text" name="black"/><br/>
+    <input type="hidden" name="secret" value="{{ secret }}"/>
+    <input type="submit"/>
+  </form>
+</body>
+</html>
