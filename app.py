@@ -80,10 +80,14 @@ def get_ics():
 
     return str(outc)
 
-@app.route("/static/<path:path>")
-def statics(path=None):
-    return ""
+# @app.route("/static/<path:path>")
+# def statics(path=None):
+    # return ""
     # return send_from_directory("static", path)
+
+@app.route("/status")
+def status():
+    return "ok"
 
 if __name__ == "__main__":
     app.run(host="0.0.0.0", port=int(os.environ["PORT"]))
