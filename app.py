@@ -2,7 +2,7 @@
 
 from __future__ import print_function
 from functools import wraps
-from flask import Flask, request, render_template, send_from_directory, Response
+from flask import Flask, request, render_template, send_from_directory, Response, abort, make_response
 import requests
 from ics import Calendar
 import ics.alarm
@@ -16,7 +16,7 @@ load_dotenv(find_dotenv())
 __SECRET__ = os.environ["EVENTSPEC_SECRET"]
 __USER__ = os.environ["AUTHUSER"]
 __PASS__ = os.environ["AUTHPASS"]
-
+__TIMEOUT__ = 10
 
 app = Flask(__name__)
 
@@ -52,9 +52,17 @@ def index():
 @valid_secret
 def get_ics():
     url = request.args.get("url")
-    r = requests.get(url)
+    try:
+        r = requests.get(url, timeout=__TIMEOUT__)
+    except requests.exceptions.ReadTimeout:
+        return make_response("Indico upstream did not answer", 503)
+        # abort(503)
     icsdata = r.text
-    c = Calendar(icsdata) 
+
+    try:
+        c = Calendar(icsdata) 
+    except:
+        return make_response("Error parsing ics data", 500)
     
     outc = Calendar()
 
