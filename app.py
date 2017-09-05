@@ -16,7 +16,7 @@ load_dotenv(find_dotenv())
 __SECRET__ = os.environ["EVENTSPEC_SECRET"]
 __USER__ = os.environ["AUTHUSER"]
 __PASS__ = os.environ["AUTHPASS"]
-__TIMEOUT__ = 10
+__TIMEOUT__ = 45
 
 app = Flask(__name__)
 
@@ -57,7 +57,8 @@ def get_ics():
     except requests.exceptions.ReadTimeout:
         return make_response("Indico upstream did not answer", 503)
         # abort(503)
-    icsdata = r.text
+    # icsdata = r.text
+    icsdata = r.content.decode("utf-8").encode('ascii', 'ignore')
 
     try:
         c = Calendar(icsdata) 
