@@ -70,6 +70,7 @@ def get_ics():
     
     white = request.args.get("white").split(";")
     black = request.args.get("black").split(";")
+    alerts = request.args.get("alerts").split(";")
 
     f = lambda s: len(s) > 0
     white = filter(f, white)
@@ -82,8 +83,10 @@ def get_ics():
         if len(black) > 0 and any(fnmatch(e.name, p) for p in black):
             continue
         
-        a = ics.alarm.DisplayAlarm(description=e.name, trigger=datetime.timedelta(minutes=15))
-        e.alarms.append(a)
+        for alert in alerts:
+            a = ics.alarm.DisplayAlarm(description=e.name, trigger=datetime.timedelta(minutes=int(alert)))
+            e.alarms.append(a)
+
         outc.events.add(e)
 
     return str(outc)
