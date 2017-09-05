@@ -70,7 +70,8 @@ def get_ics():
     
     white = request.args.get("white").split(";")
     black = request.args.get("black").split(";")
-    alerts = request.args.get("alerts").split(";")
+    alerts = request.args.get("alerts")
+    alerts = alerts.split(";") if alerts != None else [15]
 
     f = lambda s: len(s) > 0
     white = filter(f, white)
